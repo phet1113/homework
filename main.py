@@ -10,6 +10,13 @@ import requests
 class api(object):
     cities = {}
     cate = []
+    dic = {}
+    def getname(self,cate,dic):
+        name = []
+        for item in cate:
+            name.append(dic[item])
+        return(name)
+
     def getdata(self, request_url):
         # ask the api to get data
         datalist =[]
@@ -36,44 +43,50 @@ class api(object):
         # create the first page
         @app.route('/')
         def index():
-            return render_template("index.html")
+            name = self.getname(self.cate,self.dic)
+            return render_template("index.html", name=name)
 
         @app.route('/index')
         def home():
-            return render_template("index.html")
+            name = self.getname(self.cate,self.dic)
+            return render_template("index.html", name=name)
 
         # make Pagination
         @app.route('/zhixia')
         def zhixia():
             datalist = []
+            name = self.getname(self.cate,self.dic)
             for item in self.cities[self.cate[0]]:
                 data = self.getdata(request_url="https://api.seniverse.com/v3/weather/now.json?key=SWGh1J31G2h8U4gfO&location="+item+"&language=zh-Hans&unit=c")
                 datalist.append(data)
-            return render_template("zhixia.html", data=datalist)
+            return render_template("zhixia.html", data=datalist, name=name)
 
         @app.route('/guangdong')
         def guangdong():
             datalist = []
+            name = self.getname(self.cate,self.dic)
             for item in self.cities[self.cate[1]]:
                 data = self.getdata(request_url="https://api.seniverse.com/v3/weather/now.json?key=SWGh1J31G2h8U4gfO&location=" + item + "&language=zh-Hans&unit=c")
                 datalist.append(data)
-            return render_template("guangdong.html", data=datalist)
+            return render_template("guangdong.html", data=datalist, name=name)
 
         @app.route('/jiangsu')
         def jiangsu():
             datalist = []
+            name = self.getname(self.cate,self.dic)
             for item in self.cities[self.cate[2]]:
                 data = self.getdata(request_url="https://api.seniverse.com/v3/weather/now.json?key=SWGh1J31G2h8U4gfO&location=" + item + "&language=zh-Hans&unit=c")
                 datalist.append(data)
-            return render_template("jiangsu.html", data=datalist)
+            return render_template("jiangsu.html", data=datalist, name=name)
 
         @app.route('/zhejiang')
         def zhejiang():
             datalist = []
+            name = self.getname(self.cate,self.dic)
             for item in self.cities[self.cate[3]]:
                 data = self.getdata(request_url="https://api.seniverse.com/v3/weather/now.json?key=SWGh1J31G2h8U4gfO&location=" + item + "&language=zh-Hans&unit=c")
                 datalist.append(data)
-            return render_template("zhejiang.html", data=datalist)
+            return render_template("zhejiang.html", data=datalist, name=name)
 
         return app
 
@@ -85,5 +98,5 @@ if __name__ == '__main__':
               "zhejiang": ["hangzhou", "ningbo", "wenzhou", "jiaxing", "shaoxing", "jinhua"]
               }
     p.cate = list(p.cities.keys())
-    print(type(p.cate[1]))
+    p.dic = {"guangdong": "广东省", "jiangsu": "江苏省", "zhejiang": "浙江省", "zhixia": "直辖市（含香港特别行政区)", "henan": "河南省"}
     p.createnet().run(debug=True)

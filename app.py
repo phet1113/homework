@@ -11,8 +11,12 @@ from main import api
 # application
 if __name__ == '__main__':
     p = api()
+    p.cities = {"zhixia": ["beijing", "shanghai", "chongqing", "tianjin", "hong Kong"],
+                "guangdong": ["guangzhou", "shenzhen", "shaoguan", "zhuhai", "foshan", "shantou", "jiangmen",
+                              "zhanjiang"],
+                "jiangsu": ["nanjing", "xuzhou", "changzhou", "suzhou", "nantong", "huaian"],
+                "zhejiang": ["hangzhou", "ningbo", "wenzhou", "jiaxing", "shaoxing", "jinhua"]
+                }
+    p.cate = list(p.cities.keys())
+    p.dic = {"guangdong": "广东省", "jiangsu": "江苏省", "zhejiang": "浙江省", "zhixia": "直辖市（含香港特别行政区)", "henan": "河南省"}
     p.createnet().run(debug=True)
-    #response = requests.get("https://api.seniverse.com/v3/weather/now.json?key=SWGh1J31G2h8U4gfO&location=beijing&language=zh-Hans&unit=c")
-    #data = response.json()
-    #print(data)
-    #print(p.getdata("https://api.seniverse.com/v3/weather/now.json?key=SWGh1J31G2h8U4gfO&location=beijing&language=zh-Hans&unit=c"))
